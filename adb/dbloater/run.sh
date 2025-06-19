@@ -35,13 +35,20 @@ fi
 
 echo "✅ Device connected."
 
+#getting installed packages
+echo "📦 Fetching list of installed packages..."
+installed_packages=$(adb shell pm list packages | sed 's/^package://')
 
-echo "Fetching package arrays from packages.sh ..."
+# Initialize counters
+success_count=0
+fail_count=0
+skipped_count=0
 
 # Get all array names defined in packages.sh
+echo "Fetching package arrays from packages.sh ..."
 array_names=$(compgen -A variable | grep '^PKG_')
-
 echo "Found Packages: $array_names"
+
 # Loop through each array and uninstall packages
 for array in $array_names; do
     if declare -p "$array" 2>/dev/null | grep -q '^declare -a'; then
@@ -50,20 +57,28 @@ for array in $array_names; do
 
         for pkg in "${packages[@]}"; do
             if echo "$installed_packages" | grep -Fxq "$pkg"; then
-                echo -n "  📦 Uninstalling: $pkg ... "
                 output=$(adb shell pm uninstall --user 0 "$pkg" 2>&1)
                 if echo "$output" | grep -q "Success"; then
-                    echo "✅ Success"
+                    echo "  ✅ Uninstalled: $pkg"
+                    ((success_count++))
                 else
-                    echo "❌ Failed - $output"
+                    echo "  ❌ Failed: $pkg - $output"
+                    ((fail_count++))
                 fi
             else
-                echo "  ⚠️  Skipped: $pkg not installed"
+                echo "  ⚠️  Skipped (not installed): $pkg"
+                ((skipped_count++))
             fi
         done
     fi
 done
 
-echo "All packages processed."
+echo -e "\n🧾 Summary:"
+echo "  ✅ Success: $success_count"
+echo "  ❌ Failed:  $fail_count"
+echo "  ⚠️  Skipped: $skipped_count"
+
+echo "\n✅ Finished processing packages."
+
 echo "Finished uninstalling selected packages."
-echo "Your device has been debloated!✅"
+echo -e "\nYour device has been debloated!✅"
