@@ -37,6 +37,8 @@ echo "✅ Device connected."
 
 
 echo "Fetching package arrays from packages.sh ..."
+echo "📦 Fetching list of installed packages..."
+installed_packages=$(adb shell pm list packages | sed 's/^package://')
 
 # Get all array names defined in packages.sh
 array_names=$(compgen -A variable | grep '^PKG_')
