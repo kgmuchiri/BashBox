@@ -39,7 +39,9 @@ echo "✅ Device connected."
 echo "Fetching package arrays from packages.sh ..."
 
 # Get all array names defined in packages.sh
-array_names=$(declare -p | grep -oP '^declare -a \K[^=]+' | sort)
+array_names=$(compgen -A variable | grep '^PKG_')
+
+cat << array_names
 
 # Loop through each array and uninstall packages
 for array in $array_names; do

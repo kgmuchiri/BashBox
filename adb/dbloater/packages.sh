@@ -4,7 +4,7 @@
 # Comment and uncomment the desired groups in the run.sh script to select which packages to remove.
 
 # Samsung Applications
-SAMSUNG-APPS=(
+PKG_SAMSUNG=(
     com.samsung.android.app.settings.bixby
     com.samsung.android.app.watchmanager
     com.samsung.android.app.contacts
@@ -27,7 +27,7 @@ SAMSUNG-APPS=(
     com.samsung.android.voc)
 
 #Google Apps
-GOOGLE-APPS=(
+PKG_GOOGLE_APPS=(
     com.google.android.apps.maps
     com.google.android.youtube
     com.google.android.gm
@@ -36,7 +36,7 @@ GOOGLE-APPS=(
 )
 
 #Facebook
-FACEBOOK_PKGS=(
+PKG_FACEBOOK=(
     com.facebook.appmanager
     com.facebook.system
     com.facebook.services
@@ -53,7 +53,7 @@ FACEBOOK_PKGS=(
 #)
 
 #netflix
-NETFLIX=(com.netflix.partner.activation)
+PKG_NETFLIX=(com.netflix.partner.activation)
 
 #onedrive
-ONEDRIVE=(com.microsoft.skydrive)
+PKG_ONEDRIVE=(com.microsoft.skydrive)
