@@ -6,10 +6,10 @@ set -e
 
 print_logo() {
     cat << "EOF"
-    ____  ____  _             _            
+     ____  ____  _             _            
     |  _ \| __ )| | ___   __ _| |_ ___ _ __ 
-    | | | |  _ \| |/ _ \ / _\` | __/ _ \ '__|    ADB Debloater
-    | |_| | |_) | | (_) | (_| | ||  __/ |       kgmuchiri
+    | | | |  _ \| |/ _ \ / _\` | __/ _ \ '__|   An Android Debloating Tool
+    | |_| | |_) | | (_) | (_| | ||  __/ |       By kgmuchiri
     |____/|____/|_|\___/ \__,_|\__\___|_|  
 
 EOF
@@ -19,7 +19,7 @@ print_logo
 
 
 # Load categorized package lists
-source ./apk-bloat.sh
+source ./packages.sh
 
 # Check ADB
 if ! command -v adb &> /dev/null; then
@@ -35,15 +35,23 @@ fi
 
 echo "✅ Device connected."
 
-# Combine desired groups here
-ALL_PACKAGES=(
-   com.facebook.appmanager
-)
 
-# Uninstall loop
-for pkg in "${ALL_PACKAGES[@]}"; do
-    echo "📦 Uninstalling $pkg ..."
-    adb shell pm uninstall --user 0 "$pkg"
+echo "Fetching package arrays from packages.sh ..."
+
+# Get all array names defined in packages.sh
+array_names=$(declare -p | grep -oP '^declare -a \K[^=]+' | sort)
+
+# Loop through each array and uninstall packages
+for array in $array_names; do
+    echo "Group: $array"
+    eval "packages=(\"\${$array[@]}\")"
+
+    for pkg in "${packages[@]}"; do
+        echo "  Uninstalling: $pkg"
+        adb shell pm uninstall --user 0 "$pkg"
+    done
 done
 
-echo "✅ Finished uninstalling selected packages."
+echo "All packages processed."
+echo "Finished uninstalling selected packages."
+echo "Your device has been debloated!✅"
