@@ -49,15 +49,16 @@ for array in $array_names; do
         eval "packages=(\"\${$array[@]}\")"
 
         for pkg in "${packages[@]}"; do
-            echo -n "  📦 Uninstalling: $pkg ... "
-            output=$(adb shell pm uninstall --user 0 "$pkg" 2>&1)
-
-            if echo "$output" | grep -q "Success"; then
-                echo "✅ Success"
-            elif echo "$output" | grep -qi "not installed\|Unknown package"; then
-                echo "⚠️  Not installed"
+            if echo "$installed_packages" | grep -Fxq "$pkg"; then
+                echo -n "  📦 Uninstalling: $pkg ... "
+                output=$(adb shell pm uninstall --user 0 "$pkg" 2>&1)
+                if echo "$output" | grep -q "Success"; then
+                    echo "✅ Success"
+                else
+                    echo "❌ Failed - $output"
+                fi
             else
-                echo "❌ Failed - $output"
+                echo "  ⚠️  Skipped: $pkg not installed"
             fi
         done
     fi
