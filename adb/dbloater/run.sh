@@ -1,20 +1,17 @@
 #!/bin/bash
 
-
 set +e
-
 
 print_logo() {
     cat << "EOF"
      ____  ____  _             _            
     |  _ \| __ )| | ___   __ _| |_ ___ _ __ 
     | | | |  _ \| |/ _ \ / _\` | __/ _ \ '__|   An Android Debloating Tool
-    | |_| | |_) | | (_) | (_| | ||  __/ |       By kgmuchiri
+    | |_| | |_) | | (_) | (_| | ||  __/ |       
     |____/|____/|_|\___/ \__,_|\__\___|_|  
 
 EOF
 }
-
 print_logo
 
 
@@ -66,7 +63,7 @@ for array in $array_names; do
                     ((fail_count++))
                 fi
             else
-                echo "  ⚠️  Skipped (not installed): $pkg"
+                echo "  ⚠️ Skipped (not installed): $pkg"
                 ((skipped_count++))
             fi
         done
@@ -78,7 +75,7 @@ echo "  ✅ Success: $success_count"
 echo "  ❌ Failed:  $fail_count"
 echo "  ⚠️ Skipped: $skipped_count"
 
-echo "\n✅ Finished processing packages."
+echo "✅ Finished processing packages."
 
 echo "Finished uninstalling selected packages."
 echo -e "\nYour device has been debloated!✅"

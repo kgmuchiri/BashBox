@@ -18,7 +18,6 @@ PKG_SAMSUNG=(
     com.samsung.android.stickercenter
     com.samsung.android.aremojieditor
     com.samsung.android.app.notes
-    com.samsung.android.themecenter
     com.samsung.android.aremoji
     com.sec.android.mimage.avatarstickers
     com.samsung.android.kidsinstaller
