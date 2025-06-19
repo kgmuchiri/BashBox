@@ -41,8 +41,7 @@ echo "Fetching package arrays from packages.sh ..."
 # Get all array names defined in packages.sh
 array_names=$(compgen -A variable | grep '^PKG_')
 
-cat << array_names
-
+echo "Found Packages: $array_names"
 # Loop through each array and uninstall packages
 for array in $array_names; do
     echo "Group: $array"
