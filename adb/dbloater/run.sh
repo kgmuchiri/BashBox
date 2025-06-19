@@ -44,13 +44,23 @@ array_names=$(compgen -A variable | grep '^PKG_')
 echo "Found Packages: $array_names"
 # Loop through each array and uninstall packages
 for array in $array_names; do
-    echo "Group: $array"
-    eval "packages=(\"\${$array[@]}\")"
+    if declare -p "$array" 2>/dev/null | grep -q '^declare \-a'; then
+        echo -e "\n📁 Group: $array"
+        eval "packages=(\"\${$array[@]}\")"
 
-    for pkg in "${packages[@]}"; do
-        echo "  Uninstalling: $pkg"
-        adb shell pm uninstall --user 0 "$pkg"
-    done
+        for pkg in "${packages[@]}"; do
+            echo -n "  📦 Uninstalling: $pkg ... "
+            output=$(adb shell pm uninstall --user 0 "$pkg" 2>&1)
+
+            if echo "$output" | grep -q "Success"; then
+                echo "✅ Success"
+            elif echo "$output" | grep -qi "not installed\|Unknown package"; then
+                echo "⚠️  Not installed"
+            else
+                echo "❌ Failed - $output"
+            fi
+        done
+    fi
 done
 
 echo "All packages processed."
