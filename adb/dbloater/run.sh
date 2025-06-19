@@ -44,7 +44,7 @@ array_names=$(compgen -A variable | grep '^PKG_')
 echo "Found Packages: $array_names"
 # Loop through each array and uninstall packages
 for array in $array_names; do
-    if declare -p "$array" 2>/dev/null | grep -q '^declare \-a'; then
+    if declare -p "$array" 2>/dev/null | grep -q '^declare -a'; then
         echo -e "\n📁 Group: $array"
         eval "packages=(\"\${$array[@]}\")"
 
