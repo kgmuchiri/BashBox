@@ -76,7 +76,7 @@ done
 echo -e "\n🧾 Summary:"
 echo "  ✅ Success: $success_count"
 echo "  ❌ Failed:  $fail_count"
-echo "  ⚠️  Skipped: $skipped_count"
+echo "  ⚠️ Skipped: $skipped_count"
 
 echo "\n✅ Finished processing packages."
 
